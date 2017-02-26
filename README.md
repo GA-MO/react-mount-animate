@@ -1,17 +1,82 @@
-library-boilerplate
-=========================
+# React-mount-animate
+#####library for make animate when mount react component
 
-An opinionated setup I plan to use for my libraries.
+## Getting started
 
-It has CommonJS and UMD builds via Babel and Webpack, ESLint, and Mocha.  
-It also has React-friendly examples folder with library code mapped to the sources.
+#### Install with NPM:
+```
+$ npm install react-mount-animate --save
+```
 
-If you use this, make sure to grep for “library-boilerplate” and replace every occurrence.
-See `package.json` in the root and the example folder for the list of the available commands.
+#### Use with decorator:
+```js
+import animateMount, { TransitionGroup } from 'react-mount-animate' // Import animateMount and TransitionGroup
 
-Note that this is an *opinionated* boilerplate. You might want to:
+@animateMount({
+  animateIn: (dom, callback) => { // animateIn will call before mount a component
+    TweenMax.from(dom, 0.3, { opacity: 0, onComplete: callback })
+  },
+  animateOut: (dom, callback) => { // animateOut will call before unmount a component
+    TweenMax.to(dom, 0.3, { opacity: 0, onComplete: callback })
+  },
+})
+class Item extends React.Component {
+  render() {
+    return (
+      <div>Mount with animate</div>
+    );
+  }
+}
 
-* Set `stage` to `2` in `.babelrc` so you don’t depend on language features that might be gone tomorrow;
-* Remove `loose: ["all"]` from `.babelrc` so the behavior is spec-compliant.
+class App extends React.Component {
+  state = {
+    show: false,
+  }
+  render() {
+    return (
+      <div>
+        <TransitionGroup>
+          { this.state.show && <Item /> }
+        </TransitionGroup>
+      </div>
+    );
+  }
+}
+```
 
-You have been warned.
+#### Use with higher order component:
+```js
+import animateMount, { TransitionGroup } from 'react-mount-animate' // Import animateMount and TransitionGroup
+
+class Item extends React.Component {
+  render() {
+    return (
+      <div>Mount with animate</div>
+    );
+  }
+}
+
+const AnimateMount = animateMount({
+  animateIn: (dom, callback) => { // animateIn will call before mount a component
+    TweenMax.from(dom, 0.3, { opacity: 0, onComplete: callback })
+  },
+  animateOut: (dom, callback) => { // animateOut will call before unmount a component
+    TweenMax.to(dom, 0.3, { opacity: 0, onComplete: callback })
+  },
+})(Item)
+
+class App extends React.Component {
+  state = {
+    show: false,
+  }
+  render() {
+    return (
+      <div>
+        <TransitionGroup>
+          { this.state.show && <AnimateMount /> }
+        </TransitionGroup>
+      </div>
+    );
+  }
+}
+```

@@ -1,6 +1,6 @@
 {
   "name": "react-mount-animate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "library for make animate when mount react component",
   "main": "lib/index.js",
   "scripts": {
